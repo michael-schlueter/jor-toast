@@ -1,4 +1,4 @@
-import React, { useContext, useState, } from "react";
+import React, { useContext, useState } from "react";
 
 import Button from "../Button";
 import ToastShelf from "../ToastShelf";
@@ -12,7 +12,7 @@ function ToastPlayground() {
   const [message, setMessage] = useState("");
   const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
 
-  const { createToast, } = useContext(ToastContext);
+  const { createToast } = useContext(ToastContext);
 
   function handleCreateToast(event) {
     event.preventDefault();
