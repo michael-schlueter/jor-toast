@@ -1,17 +1,31 @@
-import React, { createContext, useState, useCallback } from "react";
+import { createContext, useState, useCallback, ReactNode } from "react";
 import useEscapeKey from "../../hooks/useEscapeKey";
+import { v4 as uuidv4 } from "uuid";
 
-export const ToastContext = createContext();
+interface Toast {
+  id: string;
+  message: string;
+  variant: 'error' | 'success' | 'notice' | 'warning';
+}
 
-function ToastProvider({ children }) {
-  const [toasts, setToasts] = useState([
+interface ToastContextType {
+  toasts: Toast[];
+  setToasts: React.Dispatch<React.SetStateAction<Toast[]>>;
+  createToast: (message: string, variant: 'error' | 'success' | 'notice' | 'warning') => void;
+  dismissToast: (id: string) => void;
+}
+
+export const ToastContext = createContext<ToastContextType | null>(null);
+
+function ToastProvider({ children }: { children: ReactNode }) {
+  const [toasts, setToasts] = useState<Toast[]>([
     {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       message: "Something went wrong!",
       variant: "error",
     },
     {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       message: "17 photos uploaded",
       variant: "success",
     },
@@ -23,11 +37,11 @@ function ToastProvider({ children }) {
 
   useEscapeKey(handleEscape);
 
-  function createToast(message, variant) {
+  function createToast(message: string, variant: 'error' | 'success' | 'notice' | 'warning') {
     const nextToasts = [
       ...toasts,
       {
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         message,
         variant,
       },
@@ -36,7 +50,7 @@ function ToastProvider({ children }) {
     setToasts(nextToasts);
   }
 
-  function dismissToast(id) {
+  function dismissToast(id: string) {
     const nextToasts = toasts.filter((toast) => {
       return toast.id !== id;
     });
