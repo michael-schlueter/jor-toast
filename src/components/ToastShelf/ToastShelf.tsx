@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { ToastContext } from "../ToastProvider";
 import Toast from "../Toast";

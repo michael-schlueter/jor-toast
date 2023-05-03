@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { ReactNode, useContext } from "react";
 
 import { ToastContext } from "../ToastProvider";
 import {
@@ -13,6 +13,12 @@ import VisuallyHidden from "../VisuallyHidden";
 
 import styles from "./Toast.module.css";
 
+interface ToastProps {
+  id: string;
+  children: ReactNode;
+  variant: 'notice' | 'warning' | 'success' | 'error';
+}
+
 const ICONS_BY_VARIANT = {
   notice: Info,
   warning: AlertTriangle,
@@ -20,7 +26,7 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ id, children, variant }) {
+function Toast({ id, children, variant }: ToastProps) {
   const { dismissToast } = useContext(ToastContext);
   const Icon = ICONS_BY_VARIANT[variant];
 
