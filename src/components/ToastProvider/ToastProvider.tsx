@@ -15,7 +15,7 @@ interface ToastContextType {
   dismissToast: (id: string) => void;
 }
 
-export const ToastContext = createContext<ToastContextType | null>(null);
+export const ToastContext = createContext<ToastContextType>({} as ToastContextType);
 
 function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([

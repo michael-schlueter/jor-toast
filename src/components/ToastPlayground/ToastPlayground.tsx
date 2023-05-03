@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
 
 import Button from "../Button";
 import ToastShelf from "../ToastShelf";
@@ -6,19 +6,24 @@ import { ToastContext } from "../ToastProvider";
 
 import styles from "./ToastPlayground.module.css";
 
-const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
+const VARIANT_OPTIONS = ["notice", "warning", "success", "error"] as const;
+type Variant = typeof VARIANT_OPTIONS[number];
 
 function ToastPlayground() {
   const [message, setMessage] = useState("");
-  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
+  const [variant, setVariant] = useState<Variant>(VARIANT_OPTIONS[0]);
 
   const { createToast } = useContext(ToastContext);
 
-  function handleCreateToast(event) {
+  function handleCreateToast(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     createToast(message, variant);
     setMessage("");
     setVariant(VARIANT_OPTIONS[0]);
+  }
+
+  function handleVariantChange(event: ChangeEvent<HTMLInputElement>) {
+    setVariant(event.target.value as Variant);
   }
 
   return (
@@ -66,7 +71,7 @@ function ToastPlayground() {
                     name="variant"
                     value={option}
                     checked={option === variant}
-                    onChange={(event) => setVariant(event.target.value)}
+                    onChange={handleVariantChange}
                   />
                   {option}
                 </label>
